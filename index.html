@@ -1,0 +1,54 @@
+<!doctype html>
+
+<html>
+  <head>
+    <title>learning npm</title>
+    <script type="text/javascript" src="http://unpkg.com/vue/dist/vue.js"></script>
+
+    <style type="text/css">
+      .red{
+        color: red;
+      }
+    </style>
+  </head>
+
+  <body>
+    
+  <div id="app" v-if="seen">
+    <ul>
+      <li v-for="pp in person" v-bind:class="{red:pp.isRed}">{{pp.name|addHello}}</li>
+    </ul>
+  </div>
+
+  <script type="text/javascript">
+    
+    var app = new Vue({
+      el: '#app',
+      data: {
+        seen: true,
+        testClass: "red",
+        person: [{
+          name: "wei liu",
+          isRed: true
+        }, {
+          name: "Harry",
+          isRed: false
+        }]
+      },
+      methods: {
+
+      },
+      computed: {
+
+      },
+      filters: {
+        addHello: function(name) {
+          return "Welcome " + name + "!";
+        }
+      }
+    })
+
+  </script>
+
+  </body>
+</html>
