@@ -1,0 +1,83 @@
+<html>
+  <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  </head>
+    
+  <body>
+      <h1>Vuejs component</h1>
+      
+      <div id="app">
+        <my-component v-bind:myname="myname" v-bind:myage="myage"></my-component>
+      </div>
+     
+     <template id="my_component">
+         <table>
+             <tr><th colspan="2">A SIMPLE TABLE</th></tr>
+             <tr>
+                 <td>Name</td>
+                 <td>{{myname}}</td>
+             </tr>
+             <tr>
+                 <td>Age</td>
+                 <td>{{myage}}</td>
+             </tr>
+         </table>
+     </template>
+      
+      <template id="parent_component">
+        <table>
+          <tr><th colspan="2">PARENT COMPONENT</th></tr>
+          <child-component></child-component>
+        </table>
+      </template>
+      
+      <template id="child_component">
+          <tr>
+              <td>Name</td>
+              <td>Harry</td>
+          </tr>
+          <tr>
+              <td>Age</td>
+              <td>23</td>
+          </tr>
+      </template>
+
+  </body>
+  
+  <script src="./vue.min.js"></script>
+  <script>
+        var database = {
+            myname: "Harry",
+            myage: "23"
+        }
+      
+        // var myComponent = Vue.extend({
+        //     template: '#my_component'
+        // });
+        
+        var child = Vue.extend({
+            template: '#child_component'
+        });
+        
+        var parent = Vue.extend({
+            template: "<table><tr><th colspan='2'>PARENT COMPONENT</th></tr><child-component></child-component></table>",
+            components: {
+                'child-component': child
+            }
+        });
+        
+        new Vue({
+            el: '#app',
+            data: {
+                myname: "Harry",
+                myage: "23"
+            },
+            components: {
+                'my-component': {
+                    template: '#my_component',
+                    prop: [myname, myage]
+                }
+            }
+        });
+    </script>
+</html>
