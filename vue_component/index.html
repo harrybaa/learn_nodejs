@@ -5,14 +5,55 @@
     
   <body>
       <h1>Vuejs component</h1>
-
-      <div id="bindBlock">
-        <p>{{message}}</p>
-      </div>
       
       <div id="app">
-        <my-component v-bind:myname="myname" v-bind:myage="myage"></my-component>
+
+        <div id="bindBlock">
+            <p>{{message}}</p>
+            <button v-on:click="reverseText">Reverse Above</button>
+        </div>
+
+        <!--<my-component v-bind:myname="myname" v-bind:myage="myage"></my-component>-->
+        <ol>
+            <my-list
+                v-for="item in friends"
+                v-bind:person="item"
+                v-bind:key="item.id">
+            </my-list>
+            <!--<li
+                v-for="friend in friends"
+                v-bind:id="friend.id"
+            >
+                {{friend.text}}
+            </li>-->
+        </ol>
       </div>
+
+      <hr>
+
+      <div id="officialDoc">
+        <ol>
+            <!--
+            Now we provide each todo-item with the todo object
+            it's representing, so that its content can be dynamic.
+            We also need to provide each component with a "key",
+            which will be explained later.
+            -->
+            <todo-item
+            v-for="item in groceryList"
+            v-bind:todo="item"
+            v-bind:key="item.id">
+            </todo-item>
+        </ol>
+      </div>
+
+      <template id="test_component">
+        <h2>This is a test component.</h2>
+      </template>
+
+      <template id="list_component">
+        <li>{{ person.text }}</li>
+      </template>
      
      <template id="my_component">
          <table>
@@ -51,13 +92,15 @@
   <script src="./vue.min.js"></script>
   <script>
         var database = {
+            message: "This is a message about...",
             myname: "Harry",
-            myage: "23"
+            myage: "23",
+            friends: [
+                {id: 1, text: 'vegetables'},
+                {id: 2, text: 'Meet'},
+                {id: 3, text: 'Whatever'}
+            ]
         }
-      
-        // var myComponent = Vue.extend({
-        //     template: '#my_component'
-        // });
         
         var child = Vue.extend({
             template: '#child_component'
@@ -69,19 +112,36 @@
                 'child-component': child
             }
         });
+
+        Vue.component('my-list', {
+                prop: ['person'],
+                template: '<li>{{ person.text }}</li>'
+        })
         
-        new Vue({
+        var app = new Vue({
             el: '#app',
-            data: {
-                myname: "Harry",
-                myage: "23"
-            },
-            components: {
-                'my-component': {
-                    template: '#my_component',
-                    prop: [myname, myage]
+            data: database,
+            methods: {
+                reverseText: function() {
+                    this.message = this.message.split('').reverse('').join('');
                 }
             }
         });
+
+        Vue.component('todo-item', {
+            props: ['todo'],
+            template: '<li>{{ todo.text }}</li>'
+        })
+
+        var officialDoc = new Vue({
+            el: '#officialDoc',
+            data: {
+                groceryList: [
+                { id: 0, text: 'Vegetables' },
+                { id: 1, text: 'Cheese' },
+                { id: 2, text: 'Whatever else humans are supposed to eat' }
+                ]
+            }
+        })
     </script>
 </html>
