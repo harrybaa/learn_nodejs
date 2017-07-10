@@ -8,7 +8,8 @@ var del = require('del');
 
 var paths = {
   scripts: 'client/js/*',
-  images: 'client/img/*'
+  images: 'client/img/*',
+  scss: 'client/scss/*'
 };
 
 // Not all tasks need to use streams
@@ -23,11 +24,17 @@ gulp.task('scripts', ['clean'], function() {
   // with sourcemaps all the way down
   return gulp.src(paths.scripts)
     .pipe(sourcemaps.init())
-      .pipe(coffee())
+      // .pipe(coffee())
       .pipe(uglify())
       .pipe(concat('all.min.js'))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('build/js'));
+});
+
+gulp.task('scss', ['clean'], function() {
+  return gulp.src(paths.scss)
+    .pipe(scss({"bundleExec": true}))
+    .pipe(gulp.dest('build/css'));
 });
 
 // Copy all static images
@@ -42,6 +49,7 @@ gulp.task('images', ['clean'], function() {
 gulp.task('watch', function() {
   gulp.watch(paths.scripts, ['scripts']);
   gulp.watch(paths.images, ['images']);
+  gulp.watch(paths.scss, ['scss']);
 });
 
 // The default task (called when you run `gulp` from cli)
