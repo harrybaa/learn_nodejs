@@ -13,20 +13,12 @@
             <button v-on:click="reverseText">Reverse Above</button>
         </div>
 
-        <!--<my-component v-bind:myname="myname" v-bind:myage="myage"></my-component>-->
-        <ol>
-            <my-list
-                v-for="item in friends"
-                v-bind:person="item"
-                v-bind:key="item.id">
-            </my-list>
-            <!--<li
-                v-for="friend in friends"
-                v-bind:id="friend.id"
-            >
-                {{friend.text}}
-            </li>-->
-        </ol>
+      </div>
+
+      <hr>
+
+      <div id="example2">
+        <list-div :friends="friends"></list-div>
       </div>
 
       <hr>
@@ -47,12 +39,33 @@
         </ol>
       </div>
 
+      <hr>
+
+      <div id="returndata">
+        <simple-counter></simple-counter>
+        <simple-counter></simple-counter>
+        <simple-counter></simple-counter>
+        <simple-counter></simple-counter>
+        <simple-counter></simple-counter>
+      </div>
+
+      <hr>
+
+      <div id="app4">
+        <child4 :my-message="parentMessage"></child4>
+      </div>
+
       <template id="test_component">
         <h2>This is a test component.</h2>
       </template>
 
       <template id="list_component">
-        <li>{{ person.text }}</li>
+        <ol>
+            <li
+            v-for="item in friends">
+                {{item.text}}
+            </li>
+        </ol>
       </template>
      
      <template id="my_component">
@@ -91,6 +104,22 @@
   
   <script src="./vue.min.js"></script>
   <script>
+
+        // example one
+        var app = new Vue({
+            el: '#app',
+            data: {
+                message: "A simple message..."
+            },
+            methods: {
+                reverseText: function() {
+                    this.message = this.message.split('').reverse('').join('');
+                }
+            }
+        });
+
+        // example two
+
         var database = {
             message: "This is a message about...",
             myname: "Harry",
@@ -103,31 +132,28 @@
         }
         
         var child = Vue.extend({
-            template: '#child_component'
+            props: ['friends'],
+            template: '#list_component'
         });
         
-        var parent = Vue.extend({
-            template: "<table><tr><th colspan='2'>PARENT COMPONENT</th></tr><child-component></child-component></table>",
-            components: {
-                'child-component': child
-            }
-        });
+        // var parent = Vue.extend({
+        //     props: ['friends'],
+        //     template: "<div><child-component></child-component><div>",
+        //     components: {
+        //         'child-component': child
+        //     }
+        // });
 
-        Vue.component('my-list', {
-                prop: ['person'],
-                template: '<li>{{ person.text }}</li>'
-        })
-        
-        var app = new Vue({
-            el: '#app',
+        var example2 = new Vue({
+            el: '#example2',
             data: database,
-            methods: {
-                reverseText: function() {
-                    this.message = this.message.split('').reverse('').join('');
-                }
+            components: {
+                'list-div': child
             }
-        });
+        })
 
+        // example official
+        
         Vue.component('todo-item', {
             props: ['todo'],
             template: '<li>{{ todo.text }}</li>'
@@ -143,5 +169,41 @@
                 ]
             }
         })
+
+        // example three
+        var countData = {
+            counter: 0
+        }
+
+        var simpleCountComponent = Vue.extend({
+            template: '<button @click="counter += 1">{{ counter }}</button>',
+            data: function () {
+                return {
+                    counter: 0
+                }
+            }
+        })
+
+        var countApp = new Vue({
+            el: '#returndata',
+            components: {
+                'simple-counter': simpleCountComponent
+            }
+        })
+
+        // example four
+
+        Vue.component('child4', {
+            props: ['myMessage'],
+            template: '<span>{{ myMessage }}</span>'
+        })
+
+        var app4 = new Vue({
+            el: '#app4',
+            data: {
+                parentMessage: "from parent"
+            }
+        })
+        
     </script>
 </html>
