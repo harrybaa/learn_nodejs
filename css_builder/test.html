@@ -1,0 +1,67 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <style>
+      body{
+        padding: 0; margin: 0;
+        box-sizing: border-box;
+      }
+      .container{
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        border: 1px solid #cc3;
+      }
+
+      .flx{
+        display: flex;
+      }
+      .bor{
+        float: left;
+        border: 1px solid red;
+        height: 50px;
+      }
+      .left{
+        width: 50px;
+      }
+      .middle{
+        flex-grow: 1;
+        background: lime;
+      }
+      .right{
+        width: 50px;
+      }
+
+      .flt-left{
+        float: left;
+        background: orange;
+        width: 50px;
+        height: 50px;
+      }
+      .n-f-right{
+        border: 1px solid black;
+        width: 100px;
+        height: 50px;
+        margin-left: 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <p>文字垂直居中</p>
+    <div class="container">
+      This is a text line.
+    </div>
+
+    <p>经典三分布局</p>
+    <div class="flx">
+        <div class="left bor">left</div>
+        <div class="middle bor">middle</div>
+        <div class="right bor">right</div>
+    </div>
+
+    <p>float与非float的碰撞</p>
+    <div class="flt-left">flt-left</div>
+    <div class="n-f-right">non-flt-right</div>
+
+  </body>
+</html>
