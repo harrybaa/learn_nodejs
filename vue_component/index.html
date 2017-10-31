@@ -1,29 +1,34 @@
 <html>
-  <head>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  </head>
-    
-  <body>
-      <h1>Vuejs component</h1>
-      
-      <div id="app">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+</head>
+
+<body>
+    <h1>Vuejs component</h1>
+
+    <!-- e.g. 1 Simple One -->
+
+    <div id="app">
 
         <div id="bindBlock">
             <p>{{message}}</p>
             <button v-on:click="reverseText">Reverse Above</button>
         </div>
 
-      </div>
+    </div>
 
-      <hr>
+    <hr>
 
-      <div id="example2">
+    <!-- e.g. 2 Child -->
+
+    <div id="example2">
         <list-div :friends="friends"></list-div>
-      </div>
+    </div>
 
-      <hr>
+    <hr>
 
-      <div id="officialDoc">
+    <div id="officialDoc">
         <ol>
             <!--
             Now we provide each todo-item with the todo object
@@ -31,179 +36,219 @@
             We also need to provide each component with a "key",
             which will be explained later.
             -->
-            <todo-item
-            v-for="item in groceryList"
-            v-bind:todo="item"
-            v-bind:key="item.id">
+            <todo-item v-for="item in groceryList" v-bind:todo="item" v-bind:key="item.id">
             </todo-item>
         </ol>
-      </div>
+    </div>
 
-      <hr>
+    <hr>
 
-      <div id="returndata">
-        <simple-counter></simple-counter>
-        <simple-counter></simple-counter>
-        <simple-counter></simple-counter>
-        <simple-counter></simple-counter>
-        <simple-counter></simple-counter>
-      </div>
+    <!-- e.g. 3 Define Events -->
 
-      <hr>
+    <div id="returndata">
+        <p>{{total}}</p>
+        <simple-counter v-on:increment="incrementTotal"></simple-counter>
+        <simple-counter @increment="incrementTotal"></simple-counter>
+        <simple-counter @increment="incrementTotal"></simple-counter>
+        <simple-counter @increment="incrementTotal"></simple-counter>
+        <simple-counter @increment="incrementTotal"></simple-counter>
+    </div>
 
-      <div id="app4">
-        <child4 :my-message="parentMessage"></child4>
-      </div>
+    <hr>
 
-      <template id="test_component">
+    <!-- e.g. 4 One Way Data Passing -->
+
+    <div id="app4">
+        <child4 :child-message="parentMessage"></child4>
+    </div>
+
+    <!-- templates -->
+
+    <template id="test_component">
         <h2>This is a test component.</h2>
-      </template>
+    </template>
 
-      <template id="list_component">
+    <template id="list_component">
         <ol>
-            <li
-            v-for="item in friends">
+            <li v-for="item in friends">
                 {{item.text}}
             </li>
         </ol>
-      </template>
-     
-     <template id="my_component">
-         <table>
-             <tr><th colspan="2">A SIMPLE TABLE</th></tr>
-             <tr>
-                 <td>Name</td>
-                 <td>{{myname}}</td>
-             </tr>
-             <tr>
-                 <td>Age</td>
-                 <td>{{myage}}</td>
-             </tr>
-         </table>
-     </template>
-      
-      <template id="parent_component">
+    </template>
+
+    <template id="my_component">
         <table>
-          <tr><th colspan="2">PARENT COMPONENT</th></tr>
-          <child-component></child-component>
+            <tr>
+                <th colspan="2">A SIMPLE TABLE</th>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td>{{myname}}</td>
+            </tr>
+            <tr>
+                <td>Age</td>
+                <td>{{myage}}</td>
+            </tr>
         </table>
-      </template>
-      
-      <template id="child_component">
-          <tr>
-              <td>Name</td>
-              <td>Harry</td>
-          </tr>
-          <tr>
-              <td>Age</td>
-              <td>23</td>
-          </tr>
-      </template>
+    </template>
 
-  </body>
-  
-  <script src="./vue.min.js"></script>
-  <script>
+    <template id="parent_component">
+        <table>
+            <tr>
+                <th colspan="2">PARENT COMPONENT</th>
+            </tr>
+            <child-component></child-component>
+        </table>
+    </template>
 
-        // example one
-        var app = new Vue({
-            el: '#app',
-            data: {
-                message: "A simple message..."
-            },
-            methods: {
-                reverseText: function() {
-                    this.message = this.message.split('').reverse('').join('');
-                }
+    <template id="child_component">
+        <tr>
+            <td>Name</td>
+            <td>Harry</td>
+        </tr>
+        <tr>
+            <td>Age</td>
+            <td>23</td>
+        </tr>
+    </template>
+
+</body>
+
+<script src="./vue.min.js"></script>
+<script>
+    // example one
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message: "A simple message..."
+        },
+        methods: {
+            reverseText: function () {
+                this.message = this.message.split('').reverse().join('');
             }
-        });
+        }
+    });
 
-        // example two
+    // example two
 
-        var database = {
-            message: "This is a message about...",
-            myname: "Harry",
-            myage: "23",
-            friends: [
-                {id: 1, text: 'vegetables'},
-                {id: 2, text: 'Meet'},
-                {id: 3, text: 'Whatever'}
+    var database = {
+        message: "This is a message about...",
+        myname: "Harry",
+        myage: "23",
+        friends: [{
+                id: 1,
+                text: 'vegetables'
+            },
+            {
+                id: 2,
+                text: 'Meet'
+            },
+            {
+                id: 3,
+                text: 'Whatever'
+            }
+        ]
+    }
+
+    var child = Vue.extend({
+        props: ['friends'],
+        template: '#list_component'
+    });
+
+    // var parent = Vue.extend({
+    //     props: ['friends'],
+    //     template: "<div><child-component></child-component><div>",
+    //     components: {
+    //         'child-component': child
+    //     }
+    // });
+
+    var example2 = new Vue({
+        el: '#example2',
+        data: database,
+        components: {
+            'list-div': child
+        }
+    })
+
+    // example official
+
+    Vue.component('todo-item', {
+        props: ['todo'],
+        template: '<li>{{ todo.text }}</li>'
+    })
+
+    var officialDoc = new Vue({
+        el: '#officialDoc',
+        data: {
+            groceryList: [{
+                    id: 0,
+                    text: 'Vegetables'
+                },
+                {
+                    id: 1,
+                    text: 'Cheese'
+                },
+                {
+                    id: 2,
+                    text: 'Whatever else humans are supposed to eat'
+                }
             ]
         }
-        
-        var child = Vue.extend({
-            props: ['friends'],
-            template: '#list_component'
-        });
-        
-        // var parent = Vue.extend({
-        //     props: ['friends'],
-        //     template: "<div><child-component></child-component><div>",
-        //     components: {
-        //         'child-component': child
-        //     }
-        // });
+    })
 
-        var example2 = new Vue({
-            el: '#example2',
-            data: database,
-            components: {
-                'list-div': child
+    // example three
+    var countData = {
+        counter: 0
+    }
+
+    Vue.component('simple-counter', {
+        template: '<button @click="countThis">{{ counter }}</button>',
+        data: function () {
+            return {
+                counter: 0
             }
-        })
-
-        // example official
-        
-        Vue.component('todo-item', {
-            props: ['todo'],
-            template: '<li>{{ todo.text }}</li>'
-        })
-
-        var officialDoc = new Vue({
-            el: '#officialDoc',
-            data: {
-                groceryList: [
-                { id: 0, text: 'Vegetables' },
-                { id: 1, text: 'Cheese' },
-                { id: 2, text: 'Whatever else humans are supposed to eat' }
-                ]
+            // return countData;
+        },
+        methods: {
+            countThis: function () {
+                this.counter += 1;
+                this.$emit('increment');
             }
-        })
-
-        // example three
-        var countData = {
-            counter: 0
         }
+    })
 
-        var simpleCountComponent = Vue.extend({
-            template: '<button @click="counter += 1">{{ counter }}</button>',
-            data: function () {
-                return {
-                    counter: 0
-                }
+    var countApp = new Vue({
+        el: '#returndata',
+        data: {
+            total: 0
+        },
+        methods: {
+            incrementTotal: function () {
+                console.log("Total increaced.");
+                this.total += 1
             }
-        })
+        }
+    })
 
-        var countApp = new Vue({
-            el: '#returndata',
-            components: {
-                'simple-counter': simpleCountComponent
-            }
-        })
+    // example four
 
-        // example four
+    Vue.component('grand-child', {
+        props: ['grandChildMessage'],
+        template: '<span>{{ grandChildMessage }}</span>'
+    })
 
-        Vue.component('child4', {
-            props: ['myMessage'],
-            template: '<span>{{ myMessage }}</span>'
-        })
+    Vue.component('child4', {
+        props: ['childMessage'],
+        template: '<grand-child :grand-child-message="childMessage"></grand-child>'
+    })
 
-        var app4 = new Vue({
-            el: '#app4',
-            data: {
-                parentMessage: "from parent"
-            }
-        })
-        
-    </script>
+    var app4 = new Vue({
+        el: '#app4',
+        data: {
+            parentMessage: "from parent"
+        }
+    })
+</script>
+
 </html>
